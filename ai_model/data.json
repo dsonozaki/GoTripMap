@@ -1,0 +1,33 @@
+<<<<<<< HEAD
+{"id": "2023c3cb-39e8-44a1-ab71-67d3374459b2", "entries": [{"entryno": 1, "tsys": "ped", "time": "NOT_SPECIFIED", "maxdistance": "NOT_SPECIFIED", "mindistance": "NOT_SPECIFIED", "startpoint": "FROM_CLIENT", "destpoint": {"name": "", "category": "\u0440\u0457\u0440\u0455\u0440\u2116\u0441\u201a\u0440\u0451"}}]}
+=======
+﻿{
+    "id": "b0bab5e9-69c6-4360-9709-a1883bf42fa7",
+    "entries": [
+        {
+            "entryno": 1,
+            "tsys": "bus",
+            "time": "NOT_SPECIFIED",
+            "maxdistance": "NOT_SPECIFIED",
+            "mindistance": "NOT_SPECIFIED",
+            "startpoint": "FROM_CLIENT",
+            "destpoint": {
+                "name": "",
+                "category": "пиццерия"
+            }
+        },
+        {
+            "entryno": 2,
+            "tsys": "ped",
+            "time": "NOT_SPECIFIED",
+            "maxdistance": "NOT_SPECIFIED",
+            "mindistance": "NOT_SPECIFIED",
+            "startpoint": "PREVIOUS_POINT",
+            "destpoint": {
+                "name": "",
+                "category": "магазин"
+            }
+        }
+    ]
+}
+>>>>>>> ai_model

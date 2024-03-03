@@ -1,0 +1,17 @@
+Index: app/src/main/java/com/android/gotripmap/data/db/RouteDbModel.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/android/gotripmap/data/db/RouteDbModel.kt b/app/src/main/java/com/android/gotripmap/data/db/RouteDbModel.kt
+--- a/app/src/main/java/com/android/gotripmap/data/db/RouteDbModel.kt	
++++ b/app/src/main/java/com/android/gotripmap/data/db/RouteDbModel.kt	(date 1699605894084)
+@@ -12,7 +12,7 @@
+   foreignKeys =
+   [ForeignKey(
+     onDelete = ForeignKey.CASCADE, entity = SearchEntryDbModel::class,
+-    parentColumns = arrayOf("id"), childColumns = arrayOf("dbListId")
++    parentColumns = arrayOf("id"), childColumns = arrayOf("searchEntry")
+   )
+   ]
+ )

@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">GoTripMap</string>
+  <string name="history_title">ИСТОРИЯ</string>
+  <string name="liked_title">ИЗБРАННОЕ</string>
+  <string name="route_time">Время на маршрут: %1$s</string>
+  <string name="start_text_button">Начать</string>
+  <string name="image_not_loaded">Не удалось загрузить изображение.\nПроверьте подключение к Интернету.</string>
+  <string name="search_placeholder">Введите Ваш запрос</string>
+    <string name="create_first_request">Вы ещё не сделали ни одного запроса. Нажмите на строку поиска, чтобы сделать запрос</string>
+  <string name="missing_location_permission">Не выдано разрешение на получение геолокации</string>
+  <string name="network_or_gps_is_not_available">Недоступны сеть или GPS</string>
+  <string name="address_unknown">Адрес загружается…</string>
+  <string name="hello">Привет! Меня зовут Биба и я помощник в поиске маршрута</string>
+  <string name="choose_route">Выбери удобный способ ввода информации и расскажи какой маршрут ты хочешь составить</string>
+    <string name="text_ready">Готово</string>
+  <string name="choose_transport">Каким видом транспорта вы хотели бы воспользоваться?</string>
+  <string name="walking">Пеший путь</string>
+  <string name="bus">Автобус</string>
+  <string name="car">Машина</string>
+  <string name="bicycle">Велосипед</string>
+    <string name="unknown">Не определено</string>
+  <string name="nickname">Никнейм</string>
+  <string name="phone">Номер телефона</string>
+  <string name="email">E-mail</string>
+  <string name="getEmails">Получать рассылку</string>
+  <string name="save">Сохранить</string>
+  <string name="frequently_asked_questions">Часто задаваемые вопросы</string>
+    <string name="email_or_phone">Номер телефона или email</string>
+    <string name="enter">Войти</string>
+  <string name="code">Код для подтверждения</string>
+</resources>
