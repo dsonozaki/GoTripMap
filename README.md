@@ -16,13 +16,7 @@
 
  ![](./dist/img/Gosha.jpg)
 
- ### Горяинов Дмитрий
-
- Backend Arhitecture Developer
-
- ![](./dist/img/Dima.jpg)
-
-### Здир Деним
+### Здир Денис
 
 Android Developer
 
