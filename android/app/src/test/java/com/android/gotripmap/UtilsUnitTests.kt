@@ -4,6 +4,13 @@ import com.android.gotripmap.presentation.utils.EmailPhoneCorrectChecker
 import org.junit.Test
 
 import org.junit.Assert.*
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeFormatterBuilder
+import java.time.temporal.ChronoField
+import java.util.Locale
 import kotlin.random.Random
 
 /**
@@ -34,5 +41,19 @@ class UnitTests {
   fun phone_is_correct() {
      assert(EmailPhoneCorrectChecker("+79215772516").isCorrectPhone())
   }
+  fun stringToTimestamp(date: String): Long {
+    val format = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm", Locale("ru"))
+    return LocalDateTime.parse(date, format).toEpochSecond(
+      ZoneId.systemDefault().rules.getOffset(
+        Instant.now()
+      )
+    )
+  }
+  @Test
+  fun dateTimeConverterIsCorrect() {
+    stringToTimestamp("16 апреля 2024 08:58")
+  }
+
+
 
 }
