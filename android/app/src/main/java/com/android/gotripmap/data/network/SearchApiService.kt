@@ -7,11 +7,11 @@ import retrofit2.http.Headers
 import retrofit2.http.POST
 
 
-interface ApiService {
+interface SearchApiService {
 @Headers (
   "Connection: close",
   "Content-Type: application/json"
 )
-  @POST("/")
+  @POST("/search")
   suspend fun getRoutesForEntry(@Body request: SearchRequest): RouteResponse
 }

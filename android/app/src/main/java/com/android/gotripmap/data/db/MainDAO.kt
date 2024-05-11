@@ -46,5 +46,4 @@ interface MainDAO {
 
   @Query("SELECT * FROM searchentrydbmodel ORDER BY id DESC")
   fun getAllSearchEntries(): Flow<List<SearchEntryDbModel>>
-
 }

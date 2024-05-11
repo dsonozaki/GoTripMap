@@ -33,7 +33,6 @@ import com.android.gotripmap.R
 import com.android.gotripmap.presentation.bottom_navigation.BottomItem
 import com.android.gotripmap.presentation.elements.ProfilePhoto
 import com.android.gotripmap.presentation.elements.ProfileSettingElement
-import com.android.gotripmap.presentation.elements.ReceiveEmails
 import com.android.gotripmap.presentation.utils.EmailPhoneCorrectChecker
 import com.android.gotripmap.presentation.viewmodels.EditProfileVM
 import com.android.gotripmap.ui.theme.AppTheme
@@ -123,9 +122,6 @@ fun ProfileScreen(navHostController: NavHostController) {
         val checker = EmailPhoneCorrectChecker(it.text)
         correctEmail.value = checker.isCorrectEmail()
         viewModel.updateEmail(it)
-      }
-      ReceiveEmails(profile.value.receiveEmails, editing.value) {
-        viewModel.changeEmailReceive(it)
       }
       AnimatedVisibility(visible = editing.value, Modifier.align(Alignment.End)) {
         ElevatedButton(

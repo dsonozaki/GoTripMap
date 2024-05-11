@@ -94,6 +94,8 @@ fun SearchScreen(navHostController: NavHostController) {
     }
   }
 
+
+
   Column(
     Modifier
       .fillMaxWidth()

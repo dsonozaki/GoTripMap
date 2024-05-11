@@ -28,4 +28,10 @@
     <string name="email_or_phone">Номер телефона или email</string>
     <string name="enter">Войти</string>
   <string name="code">Код для подтверждения</string>
+    <string name="connection_lost">Потеряно соединение</string>
+  <string name="access_denied">Доступ запрещён</string>
+  <string name="server_error">Ошибка на стороне сервера</string>
+  <string name="server_not_found">Сервер не найден</string>
+  <string name="error_unknown">Ошибка: %1$s</string>
+  <string name="cant_connect_to_server">Не удалось подключиться к серверу</string>
 </resources>

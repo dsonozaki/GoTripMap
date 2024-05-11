@@ -3,9 +3,8 @@ package com.android.gotripmap.presentation.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.gotripmap.domain.entities.Transport
-import com.android.gotripmap.domain.usecases.routes.AddEntryUseCase
+import com.android.gotripmap.domain.usecases.routes.CreateEntryUseCase
 import com.android.gotripmap.domain.usecases.routes.MakeEntryCurrentUseCase
-import com.android.gotripmap.domain.usecases.routes.UpdateEntryUseCase
 import com.android.gotripmap.domain.usecases.voice_recognition.GetSpeechUseCase
 import com.android.gotripmap.domain.usecases.voice_recognition.StartListeningUseCase
 import com.android.gotripmap.domain.usecases.voice_recognition.StopListeningUseCase
@@ -17,13 +16,13 @@ class DialogVM(
   private val startListeningUseCase: StartListeningUseCase,
   private val stopListeningUseCase: StopListeningUseCase,
   private val makeEntryCurrentUseCase: MakeEntryCurrentUseCase,
-  private val addEntryUseCase: AddEntryUseCase,
+  private val createEntryUseCase: CreateEntryUseCase,
 ) : ViewModel() {
 
   val speech = getSpeechUseCase()
   fun addEntry(entry: String, dateTime: LocalDateTime,transport: Transport) {
     viewModelScope.launch {
-      val id = addEntryUseCase(entry, dateTime,transport)
+      val id = createEntryUseCase(entry, dateTime,transport)
       makeEntryCurrentUseCase(id.toInt())
     }
   }

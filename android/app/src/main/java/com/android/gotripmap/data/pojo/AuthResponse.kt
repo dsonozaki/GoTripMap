@@ -1,4 +1,3 @@
 package com.android.gotripmap.data.pojo
 
-class AuthResponse {
-}
+data class AuthResponse(val id: Int, val code: String)

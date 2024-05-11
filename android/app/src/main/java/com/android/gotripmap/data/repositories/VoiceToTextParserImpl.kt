@@ -78,7 +78,6 @@ class VoiceToTextParserImpl(
   override fun onResults(results: Bundle?) {
     results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
       ?.forEach { result ->
-        Log.w("speech_result", result)
         _state.update {
           it.copy(spokenText = result)
         }
@@ -94,7 +93,6 @@ class VoiceToTextParserImpl(
   override fun onPartialResults(partialResults: Bundle?) {
     val data = partialResults?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
     val word = data!![data.size - 1] as String
-    Log.w("speech_result", "partial: $word")
     _state.update {
       it.copy(spokenText = word)
     }

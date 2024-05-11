@@ -55,6 +55,25 @@ class RouteMapper(private val gson: Gson) {
       liked = routeDbModel.liked
     )
 
+  private fun mapDtToDbModel(route: Route): RouteDbModel =
+    RouteDbModel(
+      id = route.id,
+      length = route.length,
+      route = route.route,
+      endPointPlace = route.endPointPlace,
+      endPointAddress = route.endPointAddress,
+      imageLink = route.imageLink,
+      timeRequired = route.timeRequired,
+      startPointAddress = route.startPointAddress,
+      startPointPlace = route.startPointPlace,
+      transport = route.transport,
+      searchEntry = route.searchEntry,
+      liked = route.liked
+    )
+
+  fun mapDtListToDbList(dtList: List<Route>): List<RouteDbModel> =
+    dtList.map { mapDtToDbModel(it) }
+
 
   fun mapApiToDbModel(
     length: String,
