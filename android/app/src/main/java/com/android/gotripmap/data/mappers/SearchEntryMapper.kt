@@ -5,7 +5,9 @@ import com.android.gotripmap.domain.entities.SearchEntry
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeFormatterBuilder
+import java.time.temporal.ChronoField
 import java.util.Locale
 
 /**
@@ -23,6 +25,17 @@ class SearchEntryMapper {
       length = searchEntryDbModel.length
     )
 
+  fun mapDtToDbModel(searchEntry: SearchEntry) =
+    SearchEntryDbModel(
+      id = searchEntry.id,
+      entry = searchEntry.entry,
+      dateTime = stringToTimestamp(searchEntry.dateTime),
+      transport = searchEntry.transport,
+      startPointPlace = searchEntry.startPointPlace,
+      endPointPlace = searchEntry.endPointPlace,
+      length = searchEntry.length
+    )
+
   fun mapDbListToDtList(dbList: List<SearchEntryDbModel>): List<SearchEntry> =
     dbList.map { mapDbToDtModel(it) }
 
@@ -30,5 +43,9 @@ class SearchEntryMapper {
     LocalDateTime.ofEpochSecond(timestamp,0, ZoneId.systemDefault().rules.getOffset(
       Instant.now())).format(format)
 
-  val format = DateTimeFormatterBuilder().appendPattern("dd MMMM yyyy hh:mm").toFormatter(Locale.forLanguageTag("RU"))
+  private fun stringToTimestamp(date: String) =
+    LocalDateTime.parse(date,format).toEpochSecond(ZoneId.systemDefault().rules.getOffset(
+      Instant.now()))
+
+  private val format = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm", Locale("ru"))
 }

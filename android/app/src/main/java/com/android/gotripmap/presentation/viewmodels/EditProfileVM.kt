@@ -4,24 +4,38 @@ import android.util.Log
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.android.gotripmap.domain.entities.Profile
 import com.android.gotripmap.domain.usecases.profile.GetProfileUseCase
+import com.android.gotripmap.domain.usecases.profile.StartAuthUseCase
+import com.android.gotripmap.domain.usecases.profile.StartOTPUseCase
 import com.android.gotripmap.domain.usecases.profile.UpdateProfileUseCase
+import com.android.gotripmap.domain.usecases.routes.AddEntryUseCase
+import com.android.gotripmap.domain.usecases.routes.AddRoutesUseCase
+import com.android.gotripmap.domain.usecases.status.GetStatusUseCase
 import com.android.gotripmap.presentation.states.ProfileState
 import com.android.gotripmap.presentation.utils.EmailPhoneCorrectChecker
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class EditProfileVM(
   getProfileUseCase: GetProfileUseCase,
-  private val updateProfileUseCase: UpdateProfileUseCase
+  private val updateProfileUseCase: UpdateProfileUseCase,
+  private val startAuthUseCase: StartAuthUseCase,
+  private val startOtpUseCase: StartOTPUseCase,
+  private val addEntryUseCase: AddEntryUseCase,
+  private val addRoutesUseCase: AddRoutesUseCase
 ) : ViewModel() {
 
   private val newProfileFlow = MutableSharedFlow<ProfileState>()
+  private val _codeFlow = MutableStateFlow("")
+  val codeFlow = _codeFlow.asStateFlow()
 
   val profile = merge(getProfileUseCase().map { ProfileState(it) }, newProfileFlow).stateIn(
     viewModelScope,
@@ -35,16 +49,9 @@ class EditProfileVM(
     }
   }
 
-  fun changeEmailReceive(receiveEmails: Boolean) {
-    viewModelScope.launch {
-      newProfileFlow.emit(profile.value.copy(receiveEmails = receiveEmails))
-    }
-  }
-
   fun updatePhoto(photo: String) {
     viewModelScope.launch {
       newProfileFlow.emit(profile.value.copy(photo = photo))
-
     }
   }
 
@@ -66,21 +73,43 @@ class EditProfileVM(
     }
   }
 
-  fun initialize() {
+  fun startOTP(code: String) {
     viewModelScope.launch {
-      val profileState = profile.value.copy(initialized = true)
-      val checker = EmailPhoneCorrectChecker(profileState.phone.text)
-      if (checker.isCorrectEmail()) {
-        updateProfileUseCase(
-          profileState.copy(
-            phone = TextFieldValue(""),
-            email = profileState.phone
-          ).toProfile()
-        )
-      } else {
-        updateProfileUseCase(profileState.toProfile())
+      val result = startOtpUseCase(profile.value.id, code) ?: return@launch
+      viewModelScope.launch {
+        updateProfileUseCase(result.profile)
+      }
+      viewModelScope.launch {
+        addRoutesUseCase(result.routes)
+      }
+      viewModelScope.launch {
+        result.entries.forEach {
+          addEntryUseCase(it)
+        }
       }
     }
   }
 
+  fun startAuth() {
+    Log.w("started","auth started")
+    viewModelScope.launch {
+      val profileState = profile.value.copy(initialized = true)
+      val checker = EmailPhoneCorrectChecker(profileState.phone.text)
+      val profileResult = if (checker.isCorrectEmail()) {
+          profileState.copy(
+            phone = TextFieldValue(""),
+            email = profileState.phone
+          ).toProfile()
+
+      } else {
+     profileState.toProfile()
+      }
+      val (profileId,code) = startAuthUseCase(profileResult)?: return@launch
+      profileState.id = profileId
+      Log.w("profileState",profileState.toString())
+      newProfileFlow.emit(profileState)
+      Log.w("code",code)
+      _codeFlow.emit(code)
+    }
+  }
 }

@@ -4,10 +4,11 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Profile(
-  val username: String = "John Doe",
+  val id: Int = 0,
+  val username: String = "",
   val phone: String = "",
   val email: String = "",
-  val receiveEmails: Boolean = false,
   val photo: String = "",
+  val hash: String = "",
   val initialized: Boolean = false
 )

@@ -37,7 +37,6 @@ fun ProfileSettingElement(
 ) {
   Column(modifier.fillMaxWidth(), horizontalAlignment = Alignment.Start) {
     Text(description, style = MaterialTheme.typography.bodyMedium)
-    Log.w("editable",editable.toString())
     val customTextSelectionColors = TextSelectionColors(
       handleColor = AppTheme,
       backgroundColor = AppTheme

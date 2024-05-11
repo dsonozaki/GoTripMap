@@ -43,10 +43,7 @@ import com.android.gotripmap.ui.theme.AppTheme
 import org.w3c.dom.Text
 
 @Composable
-fun ReceiveCodeElement(buttonActive: MutableState<Boolean>) {
-  val code = rememberSaveable(saver=textSaver()) {
-    mutableStateOf(TextFieldValue(""))
-  }
+fun ReceiveCodeElement(code: MutableState<TextFieldValue>,buttonActive: MutableState<Boolean>) {
   Column(
     Modifier
       .padding(0.dp, 30.dp, 0.dp, 0.dp)

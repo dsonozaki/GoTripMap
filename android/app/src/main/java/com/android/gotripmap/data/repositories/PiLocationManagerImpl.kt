@@ -39,13 +39,11 @@ class PiLocationManagerImpl (val context: Context, val geocoder: Geocoder): PiLo
   override fun locationUpdates(intervalInMillis: Long): Flow<MyAddress> {
     return callbackFlow {
       if (!context.checkLocationPermission()) {
-        Log.w("address_start","fail")
         launch {
           send(MyAddress(Point(),context.getString(R.string.missing_location_permission)))
         }
       }
       if (!context.isNetworkOrGPSEnabled()) {
-        Log.w("address_start","fail")
         launch {
           send(MyAddress(Point(),context.getString(R.string.network_or_gps_is_not_available)))
         }
@@ -66,7 +64,6 @@ class PiLocationManagerImpl (val context: Context, val geocoder: Geocoder): PiLo
       }
       fusedLocationClient.requestLocationUpdates(request, locationCallback, Looper.getMainLooper())
       awaitClose {
-        Log.w("address_close","close")
         fusedLocationClient.removeLocationUpdates(locationCallback)
       }
 

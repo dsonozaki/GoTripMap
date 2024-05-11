@@ -1,5 +1,7 @@
 package com.android.gotripmap.presentation.screens
 
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -17,14 +19,17 @@ import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.android.gotripmap.R
@@ -32,6 +37,7 @@ import com.android.gotripmap.presentation.bottom_navigation.BottomItem
 import com.android.gotripmap.presentation.elements.ProfileSettingElement
 import com.android.gotripmap.presentation.elements.ReceiveCodeElement
 import com.android.gotripmap.presentation.utils.EmailPhoneCorrectChecker
+import com.android.gotripmap.presentation.utils.textSaver
 import com.android.gotripmap.presentation.viewmodels.EditProfileVM
 import com.android.gotripmap.ui.theme.AppTheme
 import com.android.gotripmap.ui.theme.GreyInApp
@@ -48,7 +54,17 @@ fun AuthScreen(navHostController: NavHostController) {
   val buttonActive = rememberSaveable {
     mutableStateOf(false)
   }
+  val code = rememberSaveable(saver= textSaver()) {
+    mutableStateOf(TextFieldValue(""))
+  }
+  val requiredCode = viewModel.codeFlow.collectAsState()
+  val context = LocalContext.current
 
+  if (requiredCode.value != "") {
+    LaunchedEffect(key1 = requiredCode) {
+      Toast.makeText(context, requiredCode.value, Toast.LENGTH_LONG).show()
+    }
+  }
 
 
   Column(
@@ -100,15 +116,16 @@ fun AuthScreen(navHostController: NavHostController) {
         AnimatedVisibility(
           visible = receivingCode.value
         ) {
-          ReceiveCodeElement(buttonActive)
+          ReceiveCodeElement(code,buttonActive)
         }
         ElevatedButton(
           onClick = {
             if (!receivingCode.value) {
               receivingCode.value = true
               buttonActive.value = false
+              viewModel.startAuth()
             } else {
-              viewModel.initialize()
+              viewModel.startOTP(code.value.text)
               navHostController.navigate(BottomItem.EDIT_PROFILE_SCREEN)
             }
           },

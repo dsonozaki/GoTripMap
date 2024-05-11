@@ -45,18 +45,12 @@ class SearchMap(
     endPoint: String,
     index: Int = 0
   ) {
-    Log.w("intermediate",intermediateResults.points.joinToString { "long=${it.longitude},latt=${it.latitude}" })
-    Log.w("intermediate","endpoint=$endPoint")
-    Log.w("intermediate","startpoint long=${startPoint.longitude},latt=${startPoint.latitude}")
-    Log.w("intermediate", "index=$index")
     val searcher = MapSearchListener {
       val results = intermediateResults.copy()
       val points = results.points.toMutableList()
       val newPoint = it.geometry[0].point!!
-      Log.w("intermediate",results.points.joinToString { "long=${it.longitude},latt=${it.latitude}" } + "ne_point: ${newPoint.longitude}, ${newPoint.latitude}")
       points.add(newPoint)
       results.points = points
-      Log.w("index", "points size=${results.points.size}")
       if (results.points.size < length + 1) {
         val newIndex = index+1
         search(
@@ -80,8 +74,6 @@ class SearchMap(
   }
 
   private fun sendPoints(intermediateResults: RouteIntermediateResults) {
-    Log.w("resultPoints",
-      intermediateResults.points.joinToString { "${it.longitude}, ${it.latitude}" })
     when (entry.transport) {
       Transport.CAR -> RouteCarMap(
         intermediateResults, callback

@@ -10,4 +10,5 @@ interface RoutesRepository {
   suspend fun changeLiked(id: Int)
   suspend fun loadRoutesForEntry(entry: SearchEntry, coordinates: MyAddress)
   suspend fun deleteRecentRoutes(id: Int)
+  suspend fun addRoutes(routes: List<Route>)
 }

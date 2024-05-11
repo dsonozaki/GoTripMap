@@ -1,16 +1,13 @@
 package com.android.gotripmap.data.network
 
+import com.android.gotripmap.BuildConfig
 import com.google.gson.GsonBuilder
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import okhttp3.ResponseBody.Companion.toResponseBody
-import okhttp3.internal.connection.ConnectInterceptor.intercept
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.io.IOException
 
-object APIFactory {
-  private const val SERVER_IP = "http://158.160.116.195"
+object SearchAPIFactory {
   private val retrofit = Retrofit.Builder().callbackExecutor {  }
     .client(
     OkHttpClient.Builder()
@@ -28,9 +25,9 @@ object APIFactory {
           .create()
       )
     )
-    .baseUrl(SERVER_IP)
+    .baseUrl(BuildConfig.SERVER_ADDRESS)
     .build()
 
-  val apiService = retrofit.create(ApiService::class.java)
+  val apiService = retrofit.create(SearchApiService::class.java)
 
 }
