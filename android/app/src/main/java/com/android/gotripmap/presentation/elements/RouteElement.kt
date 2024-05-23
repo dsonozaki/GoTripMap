@@ -92,7 +92,7 @@ private fun VisibleInfoRoute(
     loading = { CircularProgressIndicator(color = AppTheme) },
     error = { ErrorElement() },
     contentDescription = "image of the place",
-    contentScale = ContentScale.Crop //почему-то не срабатывает при повороте экрана, учесть
+    contentScale = ContentScale.Crop
   )
   val imageId = if (route.liked) {
     R.drawable.mdi_heart_liked

@@ -1,3 +1,4 @@
+from enum import Enum
 from typing import List
 from pydantic import BaseModel
 
@@ -8,18 +9,36 @@ class SearchRequest(BaseModel):
   coords: str
 
 class DestPoint(BaseModel):
-  name: str
   category: str
 
+class Entity(BaseModel):
+  entity: str
+  category: str
+
+class OpenAiResponse(BaseModel):
+  status: str
+  items: list[Entity]
+
+class AiResponse(BaseModel):
+  openai: OpenAiResponse
+
+class TimeAndPlace(BaseModel):
+  time: str | None
+  place: str
+
+class TokenType(Enum):
+  PLACE = "place"
+  TIME = "time"
+  DELIMITER = "delimiter"
+
+class MyToken(BaseModel):
+  tokenText: str
+  tokenType: TokenType
 
 class Entry(BaseModel):
   entryno: int
-  tsys: str
   time: int
-  startpoint: str
   destpoint: DestPoint
-  img: str
-
 
 class RouteResponse(BaseModel):
   id: str
@@ -31,7 +50,7 @@ class Profile(BaseModel):
   phone: str
   email: str
   photo: str
-  hash: str
+  token: str
   initialized: bool
 
 class AuthResponse(BaseModel):

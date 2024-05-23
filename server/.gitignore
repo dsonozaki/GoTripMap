@@ -1,5 +1,3 @@
 /__pycache__/
-ai_model/rutermextract/__pycache__/
-ai_model/pymorphy2/__pycache__/
-ai_model/__pycache__/
+word_to_number/__pycache__
 .env

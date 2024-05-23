@@ -18,7 +18,7 @@ data class ProfileState(
     TextFieldValue(text = profile.phone),
     TextFieldValue(text = profile.email),
     profile.photo,
-    profile.hash,
+    profile.token,
     profile.initialized
   )
 
