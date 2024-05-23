@@ -1,24 +1,23 @@
 import uvicorn
 from aiomysql import Cursor
+from environs import Env
 from fastapi import FastAPI, HTTPException
-
-from ai_model.keyword_extraction import extract
-from ai_model.make_json import make_json
-from auth_functions import getOTPCode, generateHash, createOTPKey, checkOTPCode
+from auth_functions import getOTPCode, generateToken, createOTPKey, checkOTPCode
 from my_dataclasses import SearchRequest, RouteResponse, AuthResponse, Profile, OTPResponse, OTPRequest, SearchEntry, \
   Route, RouteUpdate, EntriesUpdate
 from pool import MyPool
-from environs import Env
+from recognise_entitites import WordsRecogniser
+
 app = FastAPI()
 
 
-async def check_hash(cur: Cursor, profile_id: int, hash: str):
-  await cur.execute("SELECT (hash) FROM server.profiles WHERE id=%s", (profile_id,))
+async def check_token(cur: Cursor, profile_id: int, hash: str):
+  await cur.execute("SELECT (token) FROM server.profiles WHERE id=%s", (profile_id,))
   profile = await cur.fetchall()
   if len(profile) == 1:
     hash_compare = profile[0][0]
     if not hash_compare == hash:
-      raise HTTPException(status_code=403, detail="Неверный хэш")
+      raise HTTPException(status_code=403, detail="Неверный токен")
   else:
     raise HTTPException(status_code=403, detail=f"Пользователь с id {profile_id} не найден")
 
@@ -26,13 +25,9 @@ async def check_hash(cur: Cursor, profile_id: int, hash: str):
 @app.post("/search", response_model=RouteResponse)
 async def search(search_request: SearchRequest):
   text = search_request.text
-  with open('ai_model/request.txt', 'w', encoding='utf-8-sig') as request_file:
-    request_file.write(text)
-  extract('ai_model/request.txt', "ai_model/keywords.txt")
-  route_response = make_json()
-  open('ai_model/keywords.txt', 'w', encoding='utf-8-sig').close()
-  open('ai_model/request.txt', 'w', encoding='utf-8-sig').close()
-  return route_response
+  result = await WordsRecogniser().recognise_words(text)
+  print(result)
+  return result
 
 
 @app.post("/auth", response_model=AuthResponse)
@@ -54,9 +49,9 @@ async def auth(profile: Profile):
         await cur.execute(f"SELECT * FROM server.otp WHERE profile_id=%s", (profile_id,))
         otp = (await cur.fetchall())[0][1]
       elif len(profiles) == 0:
-        hash = generateHash()
-        await cur.execute(f"INSERT INTO server.profiles (username,phone,email,photo,hash) VALUES (%s,%s,%s,%s,%s)",
-                          (profile.username, profile.phone, profile.email, profile.photo, hash))
+        token = generateToken()
+        await cur.execute(f"INSERT INTO server.profiles (username,phone,email,photo,token) VALUES (%s,%s,%s,%s,%s)",
+                          (profile.username, profile.phone, profile.email, profile.photo, token))
         await conn.commit()
         profile_id = cur.lastrowid
         otp = createOTPKey()
@@ -100,7 +95,7 @@ async def otp(otpRequest: OTPRequest):
 async def updateRoute(routeUpdate: RouteUpdate):
   async with await MyPool().acquireConnection() as conn:
     async with conn.cursor() as cur:
-      await check_hash(cur, routeUpdate.id, routeUpdate.hash)
+      await check_token(cur, routeUpdate.id, routeUpdate.hash)
       await cur.execute("DELETE FROM server.routes WHERE profile_id=%s", (routeUpdate.id,))
       await cur.executemany("INSERT INTO server.routes (length, route, startPointPlace, startPointAddress, endPointPlace, endPointAddress, imageLink, timeRequired, transport, searchEntry, liked, profile_id) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
                             [(route.length, route.route, route.startPointPlace, route.startPointAddress,
@@ -115,7 +110,7 @@ async def updateRoute(routeUpdate: RouteUpdate):
 async def updateUserData(profile: Profile):
   async with await MyPool().acquireConnection() as conn:
     async with conn.cursor() as cur:
-      await check_hash(cur, profile.id, profile.hash)
+      await check_token(cur, profile.id, profile.token)
       await cur.execute("UPDATE server.profiles SET username=%s,phone=%s,email=%s,photo=%s WHERE id=%s",
                         (profile.username, profile.phone, profile.email, profile.photo, profile.id))
       await conn.commit()
@@ -126,7 +121,7 @@ async def updateUserData(profile: Profile):
 async def updateEntry(entryUpdate: EntriesUpdate):
   async with await MyPool().acquireConnection() as conn:
     async with conn.cursor() as cur:
-      await check_hash(cur, entryUpdate.id, entryUpdate.hash)
+      await check_token(cur, entryUpdate.id, entryUpdate.hash)
       await cur.execute("DELETE FROM server.entries WHERE profile_id=%s", (entryUpdate.id,))
       await cur.executemany("INSERT INTO server.entries (entry, dateTime, transport, startPointPlace, endPointPlace, length, profile_id) VALUES (%s,%s,%s,%s,%s,%s,%s)",
                             [(entry.entry, entry.dateTime, entry.transport, entry.startPointPlace,

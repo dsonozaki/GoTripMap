@@ -9,6 +9,6 @@ data class Profile(
   val phone: String = "",
   val email: String = "",
   val photo: String = "",
-  val hash: String = "",
+  val token: String = "",
   val initialized: Boolean = false
 )

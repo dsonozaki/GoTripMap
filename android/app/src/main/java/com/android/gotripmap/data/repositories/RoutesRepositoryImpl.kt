@@ -1,6 +1,5 @@
 package com.android.gotripmap.data.repositories
 
-import android.content.Context
 import com.android.gotripmap.R
 import com.android.gotripmap.data.db.MainDAO
 import com.android.gotripmap.data.mapkit.SearchMap
@@ -22,8 +21,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
-import java.net.SocketTimeoutException
 
 class RoutesRepositoryImpl(
   private val mainDAO: MainDAO,
@@ -55,9 +52,9 @@ class RoutesRepositoryImpl(
       response,
       coordinates,
       entry
-    ) { length: String, time: String, routeIntermadiateResults: RouteIntermediateResults ->
+    ) { routeIntermadiateResults: RouteIntermediateResults ->
       val routeResult =
-        routeMapper.mapApiToDbModel(length, time, routeIntermadiateResults, entry, response)
+        routeMapper.mapApiToDbModel(routeIntermadiateResults, entry)
       coroutineScope.launch {
         mainDAO.insertRoute(routeResult)
       }
@@ -75,14 +72,14 @@ class RoutesRepositoryImpl(
     mainDAO.changeLiked(id)
     coroutineScope.launch {
       val profile = profileRepository.profile.first()
-      if (profile.hash.isNotEmpty()) {
+      if (profile.token.isNotEmpty()) {
         if (statusRepository.isConnected.first()) {
           try {
             routeUpdateApiService.updateRoute(
               RouteUpdate(
                 mainDAO.getLikedRoutes().first(),
                 profile.id,
-                profile.hash
+                profile.token
               )
             )
           } catch (e: Exception) {
@@ -99,14 +96,14 @@ class RoutesRepositoryImpl(
     mainDAO.deleteRecentRoutes(id)
     coroutineScope.launch {
       val profile = profileRepository.profile.first()
-      if (profile.hash.isNotEmpty()) {
+      if (profile.token.isNotEmpty()) {
         if (statusRepository.isConnected.first()) {
           try {
             routeUpdateApiService.updateRoute(
               RouteUpdate(
                 mainDAO.getLikedRoutes().first(),
                 profile.id,
-                profile.hash
+                profile.token
               )
             )
           } catch (e: Exception) {

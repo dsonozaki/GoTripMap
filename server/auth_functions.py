@@ -1,6 +1,6 @@
 import string
 import random
-
+from secrets import token_hex
 import pyotp
 
 
@@ -18,6 +18,5 @@ def checkOTPCode(key: str, code: str) -> bool:
   return otp.now() == code
 
 
-def generateHash() -> str:
-  characters = string.ascii_letters + string.digits
-  return ''.join(random.choice(characters) for _ in range(45))
+def generateToken() -> str:
+  return token_hex(16)

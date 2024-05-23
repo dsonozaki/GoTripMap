@@ -1,7 +1,6 @@
 package com.android.gotripmap
 
 import android.util.Log
-import android.view.View
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.gotripmap.data.db.RouteDbModel
 import com.android.gotripmap.data.mappers.RouteMapper
@@ -20,7 +19,6 @@ import com.android.gotripmap.domain.entities.Profile
 import com.android.gotripmap.domain.entities.SearchEntry
 import com.android.gotripmap.domain.entities.Transport
 import com.google.gson.Gson
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -28,7 +26,7 @@ import retrofit2.HttpException
 import kotlin.random.Random
 
 @RunWith(AndroidJUnit4::class)
-class ApiTest {
+class AuthApiTest {
 
   private val charPool = ('a'..'z').toList()
 
@@ -36,8 +34,8 @@ class ApiTest {
     .map { Random.nextInt(0, charPool.size).let { charPool[it] } }
     .joinToString("")
 
-  private var testProfile = Profile(phone = "xwenokzkqm",id=1, hash = "V3xcP2k0OqhHmP7tBKuJTY5WYX7fSgGslUagp7cQ5J5or")
-  
+  private var testProfile = Profile(phone = "xwenokzkqm",id=1, token = "V3xcP2k0OqhHmP7tBKuJTY5WYX7fSgGslUagp7cQ5J5or")
+
   @Test
   fun testAuthAPI() = runTest {
     val authApiService = AuthAPIFactory.apiService
@@ -46,7 +44,7 @@ class ApiTest {
     assert(code.all { it.isDigit() })
     val otpApiService = OTPApiFactory.apiService
     val result = otpApiService.otp(OTPRequest(profileId, code))
-    assert(result.profile.hash.isNotEmpty())
+    assert(result.profile.token.isNotEmpty())
     assert(result.profile.id != 0)
     assert(result.profile.initialized)
     try {
@@ -82,7 +80,7 @@ class ApiTest {
       RouteUpdate(
         listOf(testRoute),
         testProfile.id,
-        testProfile.hash
+        testProfile.token
       )
     )
     print(testProfile.id)
@@ -102,7 +100,7 @@ class ApiTest {
         RouteUpdate(
           listOf(testRoute),
           111,
-          testProfile.hash
+          testProfile.token
         )
       )
     } catch (e: HttpException) {
@@ -124,7 +122,7 @@ class ApiTest {
       EntriesUpdate(
         listOf(testEntry),
         testProfile.id,
-        testProfile.hash
+        testProfile.token
       )
     )
     try {
@@ -139,7 +137,7 @@ class ApiTest {
       assert(e.code() == 403)
     }
     try {
-      EntriesAPIFactory.apiService.addEntry(EntriesUpdate(listOf(testEntry), 111, testProfile.hash))
+      EntriesAPIFactory.apiService.addEntry(EntriesUpdate(listOf(testEntry), 111, testProfile.token))
     } catch (e: HttpException) {
       assert(e.code() == 403)
     }

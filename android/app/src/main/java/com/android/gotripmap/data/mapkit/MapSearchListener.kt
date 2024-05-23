@@ -7,14 +7,11 @@ import com.yandex.mapkit.search.Session
 import com.yandex.runtime.Error
 
 class MapSearchListener(
-  private val searchAgain: (pointObject: GeoObject) -> Unit
+  private val searchAgain: (pointObjects: List<GeoObject>) -> Unit
 ): Session.SearchListener {
   override fun onSearchResponse(response: Response) {
-    val results = response.collection.children.take(2)
-    results.forEach {
-      Log.w("intermediate","search_started")
-      searchAgain(it.obj!!)
-    }
+    val results = response.collection.children.take(20).map { it.obj!! }
+      searchAgain(results)
   }
 
   override fun onSearchError(p0: Error) {

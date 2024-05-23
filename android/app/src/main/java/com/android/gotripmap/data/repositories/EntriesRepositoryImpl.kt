@@ -19,8 +19,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
-import java.net.SocketTimeoutException
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -63,14 +61,14 @@ class EntriesRepositoryImpl(
     }
     coroutineScope.launch {
       val profile = profileRepository.profile.first()
-      if (profile.hash.isNotEmpty()) {
+      if (profile.token.isNotEmpty()) {
         if (statusRepository.isConnected.first()) {
           try {
             entriesAPIService.addEntry(
               EntriesUpdate(
                 entriesMapper.mapDbListToDtList(
                   mainDAO.getAllSearchEntries().first()
-                ).filter { it.endPointPlace!=null }, profile.id, profile.hash
+                ).filter { it.endPointPlace!=null }, profile.id, profile.token
               )
             )
           } catch (e: Exception) {

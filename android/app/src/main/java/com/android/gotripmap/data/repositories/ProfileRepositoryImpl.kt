@@ -19,8 +19,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
-import java.net.SocketTimeoutException
 
 class ProfileRepositoryImpl(
   private val context: Context,
@@ -69,10 +67,10 @@ class ProfileRepositoryImpl(
     context.profileDataStore.updateData {
       profile
     }
-    Log.w("profilehash",profile.hash)
+    Log.w("profilehash",profile.token)
     Log.w("connectvity",statusRepository.isConnected.first().toString())
 
-    if (profile.hash.isNotEmpty()) {
+    if (profile.token.isNotEmpty()) {
       if (statusRepository.isConnected.first()) {
         coroutineScope.launch {
           try {
