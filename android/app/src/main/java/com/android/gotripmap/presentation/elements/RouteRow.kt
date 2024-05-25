@@ -12,8 +12,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.Dp
 import com.android.gotripmap.R
 import com.android.gotripmap.presentation.utils.rightSubstring
@@ -35,7 +37,7 @@ fun RouteRow(modifier: Modifier, color: Color, startPoint: String, endPoint: Str
       maxLines = 1
     )
     Image(
-      painterResource(R.drawable.arrow_1),
+      ImageVector.vectorResource(R.drawable.arrow_1),
       contentDescription = "walking man",
       contentScale = ContentScale.None,
       colorFilter= ColorFilter.tint(color),
