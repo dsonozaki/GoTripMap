@@ -15,4 +15,3 @@ dependencyResolutionManagement {
 
 rootProject.name = "GoTripMap"
 include(":app")
-include(":benchmark")
