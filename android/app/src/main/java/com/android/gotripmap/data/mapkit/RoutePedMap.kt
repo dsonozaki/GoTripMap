@@ -1,5 +1,6 @@
 package com.android.gotripmap.data.mapkit
 
+import android.util.Log
 import com.android.gotripmap.domain.entities.RouteIntermediateResults
 import com.yandex.mapkit.GeoObject
 import com.yandex.mapkit.RequestPoint
@@ -23,6 +24,7 @@ class RoutePedMap(
 ): Session.RouteListener {
 
   init {
+    Log.w("building","started")
     val pedestrianRouter = TransportFactory.getInstance().createPedestrianRouter()
     val timeOptions = TimeOptions()
     val startRequestPoint = RequestPoint(startPoint,RequestPointType.WAYPOINT,null,null)

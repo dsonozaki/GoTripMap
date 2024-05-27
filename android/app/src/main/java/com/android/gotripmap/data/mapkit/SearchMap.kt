@@ -114,6 +114,7 @@ class SearchMap(
     val callback = if (timeLimit == 0) {
       val first = endPoints[0].geometry[0].point!!
       { time: Double, length: Double, geoObject: GeoObject ->
+        Log.w("building","finished")
         val point = geoObject.geometry[0].point!!
         if (point.latitude == first.latitude && point.longitude == first.longitude) {
           results.add(MapKitResult(time, length, geoObject))

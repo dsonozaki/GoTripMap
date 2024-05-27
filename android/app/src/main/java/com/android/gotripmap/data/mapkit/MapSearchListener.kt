@@ -10,7 +10,7 @@ class MapSearchListener(
   private val searchAgain: (pointObjects: List<GeoObject>) -> Unit
 ): Session.SearchListener {
   override fun onSearchResponse(response: Response) {
-    val results = response.collection.children.take(20).map { it.obj!! }
+    val results = response.collection.children.take(50).map { it.obj!! }
       searchAgain(results)
   }
 
