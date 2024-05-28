@@ -1,7 +1,6 @@
 package com.android.gotripmap.presentation.bottom_navigation
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -18,11 +17,9 @@ import com.android.gotripmap.presentation.screens.SearchScreen
 fun AppNavHost(
   navHostController: NavHostController
 ) {
-  val navigateToDialog = remember {{ navHostController.navigate(BottomItem.DIALOG_SCREEN) }}
-
   NavHost(navController = navHostController, startDestination= BottomItem.SEARCH_SCREEN){
     composable(BottomItem.SEARCH_SCREEN) {
-      SearchScreen(navigateToDialog)
+      SearchScreen(navHostController)
     }
     composable(BottomItem.MENU_SCREEN) {
       MenuScreen(navHostController)

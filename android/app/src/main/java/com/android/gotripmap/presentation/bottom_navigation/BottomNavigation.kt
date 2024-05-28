@@ -7,9 +7,7 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.vectorResource
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.android.gotripmap.R
@@ -34,7 +32,7 @@ fun BottomNavigation(
           navController.navigate(item.route)
         },
         icon = {
-          Icon(ImageVector.vectorResource(id = item.iconId), contentDescription = "Icon")
+          Icon(painter = painterResource(id = item.iconId), contentDescription = "Icon")
         },
         selectedContentColor = AppTheme,
         unselectedContentColor = Color.White)

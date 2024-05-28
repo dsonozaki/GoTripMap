@@ -1,6 +1,5 @@
 package com.android.gotripmap.presentation.elements
 
-import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
@@ -30,12 +29,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import coil.compose.SubcomposeAsyncImage
@@ -62,15 +59,11 @@ fun RouteElement(route: Route, modifier: Modifier = Modifier, onLike: (Int) -> U
       .background(Color.White)
       .animateContentSize() //анимируем изменение размера контейнера при отображении дополнительных данных
   ) {
-    Log.w("elementUpdate",route.route)
     Column {
       Box(
-        modifier = modifier
-          .aspectRatio(1.777f)
-          .background(GreyInApp)
-          .clickable(onClick = {
-            expanded = !expanded
-          }),
+        modifier = modifier.aspectRatio(1.777f).background(GreyInApp).clickable(onClick = {
+          expanded = !expanded
+        }),
         contentAlignment = Alignment.Center
       ) {
         VisibleInfoRoute(route, onLike, modifier)
@@ -113,7 +106,7 @@ private fun VisibleInfoRoute(
     horizontalAlignment = Alignment.End
   ) {
     Image(
-      ImageVector.vectorResource(id = imageId),
+      painterResource(id = imageId),
       contentDescription = "like",
       modifier = Modifier
         .size(Dp(24f), Dp(24f))
@@ -143,7 +136,7 @@ fun AdditionalInfoRoute(route: Route) {
         style = MaterialTheme.typography.bodySmall
       )
       Spacer(modifier = Modifier.weight(1f))
-      ImageByTransport(route.transport,false)
+      ImageByTransport(route.transport)
     }
     Text(
       //      text = "${route.startPointAddress.rightSubstring()}: ${route.startPointPlace.rightSubstring()}\n${route.endPointAddress.rightSubstring()}: ${route.endPointPlace.rightSubstring()}",
