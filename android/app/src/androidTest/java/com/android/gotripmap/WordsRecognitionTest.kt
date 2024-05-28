@@ -100,4 +100,13 @@ class WordsRecognitionTest {
     assert(result.entries[1].time==0)
     assert(result.entries.size==2)
   }
+
+  @Test
+  fun testRecogniseLongToponym() = runTest {
+    val searchApiService = SearchAPIFactory.apiService
+    val result = searchApiService.getRoutesForEntry(SearchRequest("Я хочу посетить Летний сад",Transport.PUBLIC, MyAddress()))
+    assert(result.entries[0].destpoint.category=="Летний сад")
+    assert(result.entries[0].time==0)
+    assert(result.entries.size==1)
+  }
 }

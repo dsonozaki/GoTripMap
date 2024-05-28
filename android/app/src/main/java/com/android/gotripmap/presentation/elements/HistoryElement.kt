@@ -99,7 +99,7 @@ private fun EntryRow(
       maxLines = 1,
       overflow = TextOverflow.Ellipsis
     )
-    ImageByTransport(searchEntry.transport)
+    ImageByTransport(searchEntry.transport,false)
   }
 
 }
