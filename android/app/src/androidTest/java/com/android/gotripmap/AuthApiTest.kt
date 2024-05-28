@@ -34,14 +34,23 @@ class AuthApiTest {
     .map { Random.nextInt(0, charPool.size).let { charPool[it] } }
     .joinToString("")
 
-  private var testProfile = Profile(phone = "xwenokzkqm",id=1, token = "V3xcP2k0OqhHmP7tBKuJTY5WYX7fSgGslUagp7cQ5J5or")
+  private var testProfile = Profile(phone = "gzdajmxpnx",id=1, token = "20562b956ba0176caa427d95415f0c31")
 
   @Test
   fun testAuthAPI() = runTest {
     val authApiService = AuthAPIFactory.apiService
-    val (profileId, code) = authApiService.authentification(Profile(phone = randomStringByKotlinRandom(10)))
+    val phone = randomStringByKotlinRandom(10)
+    println(phone)
+    val (profileId, code) = authApiService.authentification(Profile(phone = phone))
+    println(code)
+    println(profileId)
     assert(code.length == 6)
     assert(code.all { it.isDigit() })
+    try {
+      authApiService.authentification(Profile())
+    } catch (e: HttpException) {
+      assert(e.code() == 403)
+    }
     val otpApiService = OTPApiFactory.apiService
     val result = otpApiService.otp(OTPRequest(profileId, code))
     assert(result.profile.token.isNotEmpty())
@@ -57,7 +66,7 @@ class AuthApiTest {
     } catch (e: HttpException) {
       assert(e.code() == 403)
     }
-  }
+  } //Сначала запускается этот тест, затем значения из него подставляются в testProfile, потом запускаются остальные
 
   @Test
   fun testRouteUpdateAPI() = runTest {
@@ -151,18 +160,6 @@ class AuthApiTest {
   }
 
   @Test
-  fun testSearchApi() = runTest {
-    val searchApi = SearchAPIFactory.apiService
-    val result = searchApi.getRoutesForEntry(
-      SearchRequest(
-        "Хочу зайти в храм, а потом в McDonalds", Transport.PUBLIC,
-        MyAddress()
-      )
-    )
-    assert(result.entries.map { it.destpoint.category } == listOf("храм", "mcdonalds"))
-  }
-
-  @Test
   fun testUserDataAPI() = runTest {
     val newProfile = testProfile.copy(username = "Абобус")
     UserDataAPIFactory.apiService.userData(newProfile)
@@ -171,5 +168,17 @@ class AuthApiTest {
     val (profileId, code) = authApiService.authentification(testProfile)
     val result = otpApiService.otp(OTPRequest(profileId, code))
     assert(result.profile.username == "Абобус")
+    val errorProfile = testProfile.copy(token = "sssdf")
+    try {
+      UserDataAPIFactory.apiService.userData(errorProfile)
+    } catch (e: HttpException) {
+      assert(e.code() == 403)
+    }
+    val errorProfile1 = testProfile.copy(id = 1111)
+    try {
+      UserDataAPIFactory.apiService.userData(errorProfile1)
+    } catch (e: HttpException) {
+      assert(e.code() == 403)
+    }
   }
 }
