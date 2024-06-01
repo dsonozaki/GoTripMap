@@ -2,7 +2,7 @@ package com.android.gotripmap.data.repositories
 
 import com.android.gotripmap.R
 import com.android.gotripmap.data.db.MainDAO
-import com.android.gotripmap.data.mapkit.SearchMap
+import com.android.gotripmap.data.mapkit.SearchMapV2
 import com.android.gotripmap.data.mappers.RouteMapper
 import com.android.gotripmap.data.network.RouteUpdateApiService
 import com.android.gotripmap.data.network.SearchApiService
@@ -48,7 +48,7 @@ class RoutesRepositoryImpl(
       statusRepository.setStatus(Status(R.string.connection_lost))
       return
     }
-    SearchMap(
+    SearchMapV2(
       response,
       coordinates,
       entry
