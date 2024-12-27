@@ -24,9 +24,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
 import com.android.gotripmap.R
-import com.android.gotripmap.presentation.bottom_navigation.BottomItem
 
 @Composable
 fun SearchView(

@@ -1,6 +1,5 @@
 package com.android.gotripmap.presentation.elements
 
-import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

@@ -1,6 +1,5 @@
 package com.android.gotripmap.presentation.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.gotripmap.domain.entities.MyAddress
@@ -10,7 +9,6 @@ import com.android.gotripmap.domain.usecases.routes.DeleteRecentRoutesUseCase
 import com.android.gotripmap.domain.usecases.routes.GetCurrentRoutesUseCase
 import com.android.gotripmap.domain.usecases.routes.LoadRouteUseCase
 import com.android.gotripmap.domain.usecases.routes.UpdateEntryUseCase
-import kotlinx.collections.immutable.immutableListOf
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -59,7 +57,6 @@ class SearchScreenVM(
         )
         deleteRecentRoutesUseCase(currentEntry.value!!.id)
       } catch (e: Exception) {
-        Log.w("problem", e.stackTraceToString())
       }
     }
   }

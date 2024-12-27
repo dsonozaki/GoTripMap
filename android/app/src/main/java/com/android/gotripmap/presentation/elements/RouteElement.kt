@@ -1,6 +1,5 @@
 package com.android.gotripmap.presentation.elements
 
-import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
@@ -23,7 +22,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -33,7 +31,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -43,7 +40,6 @@ import coil.request.ImageRequest
 import com.android.gotripmap.R
 import com.android.gotripmap.domain.entities.Route
 import com.android.gotripmap.presentation.maps.OpenMaps
-import com.android.gotripmap.presentation.utils.rightSubstring
 import com.android.gotripmap.ui.theme.AppTheme
 import com.android.gotripmap.ui.theme.GreyInApp
 
@@ -62,12 +58,11 @@ fun RouteElement(route: Route, modifier: Modifier = Modifier, onLike: (Int) -> U
       .background(Color.White)
       .animateContentSize() //анимируем изменение размера контейнера при отображении дополнительных данных
   ) {
-    Log.w("elementUpdate",route.route)
     Column {
       Box(
         modifier = modifier
           .aspectRatio(1.777f)
-          .background(GreyInApp)
+          .background(Color.White)
           .clickable(onClick = {
             expanded = !expanded
           }),

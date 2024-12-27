@@ -1,11 +1,9 @@
 package com.android.gotripmap.data.repositories
 
 import android.content.Context
-import android.location.Address
 import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
-import android.os.Build
 import android.os.Looper
 import android.util.Log
 import com.android.gotripmap.R
@@ -20,14 +18,10 @@ import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
 import com.yandex.mapkit.geometry.Point
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
 
 class PiLocationManagerImpl (val context: Context, val geocoder: Geocoder): PiLocationManager {
 
@@ -50,11 +44,13 @@ class PiLocationManagerImpl (val context: Context, val geocoder: Geocoder): PiLo
       }
 
       val request = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, intervalInMillis).setWaitForAccurateLocation(true).build()
-
+      Log.w("location","request")
       val locationCallback = object : LocationCallback() {
         override fun onLocationResult(result: LocationResult) {
+          Log.w("location",result.locations.size.toString())
           super.onLocationResult(result)
           result.locations.lastOrNull()?.let {location: Location ->
+            Log.w("location",location.latitude.toString())
             launch {
               val address = geocoder.getAddress(location.latitude,location.longitude)?.getAddressLine(0)
               send(MyAddress(Point(location.latitude,location.longitude),address))
@@ -64,6 +60,7 @@ class PiLocationManagerImpl (val context: Context, val geocoder: Geocoder): PiLo
       }
       fusedLocationClient.requestLocationUpdates(request, locationCallback, Looper.getMainLooper())
       awaitClose {
+        Log.w("location","close")
         fusedLocationClient.removeLocationUpdates(locationCallback)
       }
 

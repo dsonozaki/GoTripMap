@@ -40,22 +40,25 @@ class AuthApiTest {
   fun testAuthAPI() = runTest {
     val authApiService = AuthAPIFactory.apiService
     val phone = randomStringByKotlinRandom(10)
-    println(phone)
+    Log.w("phone",phone)
     val (profileId, code) = authApiService.authentification(Profile(phone = phone))
-    println(code)
-    println(profileId)
+    Log.w("profileId",profileId.toString())
     assert(code.length == 6)
     assert(code.all { it.isDigit() })
+    assert(profileId>=0)
+    //Проверка свойства 1 пройдена
     try {
       authApiService.authentification(Profile())
     } catch (e: HttpException) {
       assert(e.code() == 403)
     }
+    //Проверка свойства 2 пройдена
     val otpApiService = OTPApiFactory.apiService
     val result = otpApiService.otp(OTPRequest(profileId, code))
     assert(result.profile.token.isNotEmpty())
     assert(result.profile.id != 0)
     assert(result.profile.initialized)
+    //Проверка свойства 3 пройдена
     try {
       otpApiService.otp(OTPRequest(1111, code))
     } catch (e: HttpException) {
@@ -66,6 +69,7 @@ class AuthApiTest {
     } catch (e: HttpException) {
       assert(e.code() == 403)
     }
+    //Проверка свойства 4 пройдена
   } //Сначала запускается этот тест, затем значения из него подставляются в testProfile, потом запускаются остальные
 
   @Test
@@ -115,13 +119,14 @@ class AuthApiTest {
     } catch (e: HttpException) {
       assert(e.code() == 403)
     }
+    //проверка свойства 6 пройдена
     val authApiService = AuthAPIFactory.apiService
     val otpApiService = OTPApiFactory.apiService
     val mapper = RouteMapper(Gson())
     val (profileId, code) = authApiService.authentification(testProfile)
     val result = otpApiService.otp(OTPRequest(profileId, code))
-    Log.w("routes",result.routes.toString())
     assert(mapper.mapDtListToDbList(result.routes).all { it.copy(id=0) == testRoute })
+    //проверка свойства 5 пройдена
   }
 
   @Test
@@ -150,24 +155,32 @@ class AuthApiTest {
     } catch (e: HttpException) {
       assert(e.code() == 403)
     }
+    //проверка свойства 8 пройдена
     val authApiService = AuthAPIFactory.apiService
     val otpApiService = OTPApiFactory.apiService
     val (profileId, code) = authApiService.authentification(testProfile)
     val result = otpApiService.otp(OTPRequest(profileId, code))
-    Log.w("routes_entries",result.entries.toString())
-
     assert(result.entries.all { it.copy(id=0) == testEntry })
+    //проверка свойства 7 пройдена
   }
 
   @Test
   fun testUserDataAPI() = runTest {
-    val newProfile = testProfile.copy(username = "Абобус")
+    val newName = "Абобус"
+    val newPhone = randomStringByKotlinRandom(10)
+    val newEmail = randomStringByKotlinRandom(10)
+    val newPhoto = randomStringByKotlinRandom(10)
+    val newProfile = testProfile.copy(username = newName,phone= newPhone, email = newEmail, photo = newPhoto)
     UserDataAPIFactory.apiService.userData(newProfile)
     val authApiService = AuthAPIFactory.apiService
     val otpApiService = OTPApiFactory.apiService
     val (profileId, code) = authApiService.authentification(testProfile)
     val result = otpApiService.otp(OTPRequest(profileId, code))
     assert(result.profile.username == "Абобус")
+    assert(result.profile.phone == newPhone)
+    assert(result.profile.email == newEmail)
+    assert(result.profile.photo == newPhoto)
+    //проверка свойства 9 пройдена
     val errorProfile = testProfile.copy(token = "sssdf")
     try {
       UserDataAPIFactory.apiService.userData(errorProfile)
@@ -180,5 +193,6 @@ class AuthApiTest {
     } catch (e: HttpException) {
       assert(e.code() == 403)
     }
+    //проверка свойства 10 пройдена
   }
 }

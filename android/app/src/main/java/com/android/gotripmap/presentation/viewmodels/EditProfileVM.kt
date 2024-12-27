@@ -1,6 +1,5 @@
 package com.android.gotripmap.presentation.viewmodels
 
-import android.util.Log
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -10,17 +9,14 @@ import com.android.gotripmap.domain.usecases.profile.StartOTPUseCase
 import com.android.gotripmap.domain.usecases.profile.UpdateProfileUseCase
 import com.android.gotripmap.domain.usecases.routes.AddEntryUseCase
 import com.android.gotripmap.domain.usecases.routes.AddRoutesUseCase
-import com.android.gotripmap.domain.usecases.status.GetStatusUseCase
 import com.android.gotripmap.presentation.states.ProfileState
 import com.android.gotripmap.presentation.utils.EmailPhoneCorrectChecker
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
-import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
@@ -91,7 +87,6 @@ class EditProfileVM(
   }
 
   fun startAuth() {
-    Log.w("started","auth started")
     viewModelScope.launch {
       val profileState = profile.value.copy(initialized = true)
       val checker = EmailPhoneCorrectChecker(profileState.phone.text)
@@ -106,9 +101,7 @@ class EditProfileVM(
       }
       val (profileId,code) = startAuthUseCase(profileResult)?: return@launch
       profileState.id = profileId
-      Log.w("profileState",profileState.toString())
       newProfileFlow.emit(profileState)
-      Log.w("code",code)
       _codeFlow.emit(code)
     }
   }

@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.util.Log
 import com.android.gotripmap.domain.entities.Transport
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -37,7 +36,6 @@ class OpenMaps(private val context: Context) {
     transport: Transport,
     mapType: Maps
   ): Uri {
-    Log.w("pointsToDra", points.joinToString { "${it.latitude} ${it.longitude}" })
     val link = when (mapType) {
       is Maps.YandexMaps -> "yandexmaps://maps.yandex.ru/?rtext=" + points.joinToString("~") { "${it.latitude}%2C${it.longitude}" } + "&rtt=" + when (transport) {
         Transport.WALKING -> "pd"

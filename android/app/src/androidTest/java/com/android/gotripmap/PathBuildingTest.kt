@@ -21,7 +21,7 @@ import kotlin.math.sqrt
 @RunWith(AndroidJUnit4::class)
 class PathBuildingTest {
   private val searchOptions = SearchOptions().setSnippets(Snippet.PHOTOS.value)
-  private val point = Point(59.98748975305617,30.34852144436016)
+  private val point = Point(59.944548, 30.360002)
 
 
   private fun findDistance(point1: Point, point2: Point): Double {

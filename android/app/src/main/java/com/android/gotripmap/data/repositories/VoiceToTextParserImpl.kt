@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.speech.RecognitionListener
 import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
-import android.util.Log
 import com.android.gotripmap.domain.entities.VoiceToTextParserState
 import com.android.gotripmap.domain.repositories.VoiceToTextParser
 import kotlinx.coroutines.CoroutineScope

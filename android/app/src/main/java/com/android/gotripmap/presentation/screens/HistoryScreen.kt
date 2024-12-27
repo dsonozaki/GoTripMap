@@ -11,8 +11,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.navigation.NavController
 import com.android.gotripmap.presentation.bottom_navigation.BottomItem
-import com.android.gotripmap.presentation.bottom_navigation.AppNavHost
-
 import com.android.gotripmap.presentation.elements.HistoryElement
 import com.android.gotripmap.presentation.viewmodels.HistoryVM
 import org.koin.androidx.compose.getViewModel

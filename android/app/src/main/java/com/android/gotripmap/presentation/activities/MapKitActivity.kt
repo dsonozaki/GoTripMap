@@ -4,8 +4,6 @@ import android.app.Activity
 import android.os.Bundle
 import com.android.gotripmap.R
 import com.yandex.mapkit.MapKitFactory
-import com.yandex.mapkit.geometry.Point
-import com.yandex.mapkit.map.CameraListener
 import com.yandex.mapkit.mapview.MapView
 
 class MapKitActivity: Activity() {
