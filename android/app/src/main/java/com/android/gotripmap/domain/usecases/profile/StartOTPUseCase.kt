@@ -1,6 +1,5 @@
 package com.android.gotripmap.domain.usecases.profile
 
-import com.android.gotripmap.domain.entities.Profile
 import com.android.gotripmap.domain.repositories.ProfileRepository
 
 class StartOTPUseCase (private val repository: ProfileRepository) {

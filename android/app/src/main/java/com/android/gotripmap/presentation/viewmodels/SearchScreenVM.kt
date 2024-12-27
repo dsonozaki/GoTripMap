@@ -1,6 +1,5 @@
 package com.android.gotripmap.presentation.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.gotripmap.domain.entities.MyAddress
@@ -10,6 +9,8 @@ import com.android.gotripmap.domain.usecases.routes.DeleteRecentRoutesUseCase
 import com.android.gotripmap.domain.usecases.routes.GetCurrentRoutesUseCase
 import com.android.gotripmap.domain.usecases.routes.LoadRouteUseCase
 import com.android.gotripmap.domain.usecases.routes.UpdateEntryUseCase
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
@@ -30,7 +31,7 @@ class SearchScreenVM(
     null
   )
   val routes = getCurrentRoutesUseCase().map {
-    val routes = it?.routes
+    val routes = it?.routes?.toImmutableList()
     if (!routes.isNullOrEmpty())
       routes.random().let {randomRoute ->
         updateEntryUseCase(
@@ -44,7 +45,7 @@ class SearchScreenVM(
   }.stateIn(
     viewModelScope,
     SharingStarted.WhileSubscribed(5000),
-    listOf()
+    persistentListOf()
   )
 
   fun loadData() {
@@ -56,18 +57,17 @@ class SearchScreenVM(
         )
         deleteRecentRoutesUseCase(currentEntry.value!!.id)
       } catch (e: Exception) {
-        Log.w("problem", e.stackTraceToString())
       }
     }
   }
 
-  val location = MutableStateFlow(MyAddress())
+  private val location = MutableStateFlow(MyAddress())
+  val locationText = location.map { it.address }
 
   fun getLocation() {
     viewModelScope.launch {
       getAddresses(1000).collect {
-        location.emit(it)
-      }
+        location.emit(it) }
     }
   }
 

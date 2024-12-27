@@ -10,8 +10,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
-import androidx.navigation.NavController
-import com.android.gotripmap.domain.entities.Transport
 import com.android.gotripmap.presentation.elements.RouteElement
 import com.android.gotripmap.presentation.viewmodels.LikedVM
 import org.koin.androidx.compose.getViewModel

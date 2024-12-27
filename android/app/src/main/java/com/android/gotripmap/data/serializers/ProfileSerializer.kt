@@ -1,6 +1,5 @@
 package com.android.gotripmap.data.serializers
 
-import android.os.Build
 import androidx.datastore.core.Serializer
 import com.android.gotripmap.domain.entities.Profile
 import kotlinx.coroutines.Dispatchers

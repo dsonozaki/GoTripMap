@@ -26,7 +26,6 @@ class WordsRecogniser:
   extractor = NumberExtractor()
 
   async def convertTimeStringToMinutes(self, string: str) -> int:
-    print(string)
     doc = Doc(string)
     doc.segment(self.segmenter)
     doc.parse_syntax(self.syntax_parser)
@@ -70,7 +69,6 @@ class WordsRecogniser:
       env.read_env(".env")
       self.headers = {"Authorization": "Bearer " + env("AI_API")}
     response = requests.post(self.url, json=payload, headers=self.headers)
-    print(response.text)
     ai_response: AiResponse = json.loads(response.text)
     id_ = str(uuid.uuid4())
     entries: List[Entry] = list()

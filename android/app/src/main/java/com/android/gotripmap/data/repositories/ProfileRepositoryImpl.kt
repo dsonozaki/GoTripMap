@@ -67,8 +67,6 @@ class ProfileRepositoryImpl(
     context.profileDataStore.updateData {
       profile
     }
-    Log.w("profilehash",profile.token)
-    Log.w("connectvity",statusRepository.isConnected.first().toString())
 
     if (profile.token.isNotEmpty()) {
       if (statusRepository.isConnected.first()) {

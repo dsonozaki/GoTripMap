@@ -1,10 +1,12 @@
+from unicodedata import category
+
 import uvicorn
 from aiomysql import Cursor
 from environs import Env
 from fastapi import FastAPI, HTTPException
 from auth_functions import getOTPCode, generateToken, createOTPKey, checkOTPCode
 from my_dataclasses import SearchRequest, RouteResponse, AuthResponse, Profile, OTPResponse, OTPRequest, SearchEntry, \
-  Route, RouteUpdate, EntriesUpdate
+  Route, RouteUpdate, EntriesUpdate, DestPoint, Entry
 from pool import MyPool
 from recognise_entitites import WordsRecogniser
 
@@ -26,7 +28,6 @@ async def check_token(cur: Cursor, profile_id: int, hash: str):
 async def search(search_request: SearchRequest):
   text = search_request.text
   result = await WordsRecogniser().recognise_words(text)
-  print(result)
   return result
 
 

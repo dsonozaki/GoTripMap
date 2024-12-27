@@ -8,9 +8,11 @@ import com.android.gotripmap.ui.theme.GoTripMapTheme
 import com.yandex.mapkit.MapKitFactory
 
 class MainActivity : ComponentActivity() {
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     MapKitFactory.initialize(this)
+
     setContent {
       GoTripMapTheme {
         MainScreen()
