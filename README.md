@@ -34,11 +34,9 @@
  ![](./dist/img/algorythm_scheme.jpg)
 
  ## Наша команда
-
  ###  Бельская София
-
  Tech Lead, Team Lead, Tech Autor
-
+ 
  ![](./dist/img/Sofa.jpg)
 
 ### Здир Дениc
@@ -48,9 +46,8 @@ Android Developer, Backend Developer
 ![](./dist/img/Denis.jpg)
 
  ### Киселев Георгий
-
  ML Developer
-
+ 
  ![](./dist/img/Gosha.jpg)
 
  ### Горяинов Дмитрий
@@ -58,3 +55,4 @@ Android Developer, Backend Developer
  Backend Arhitecture Developer
 
  ![](./dist/img/Dima.jpg)
+
